@@ -131,15 +131,10 @@ app.options("*", cors());
 app.use(clerkMiddleware());
 
 // ---------- DB CONNECT (BEFORE ROUTES) ----------
-app.use(async (req, res, next) => {
-  try {
+
     await connectDB();
-    next();
-  } catch (err) {
-    console.error("DB connection error:", err);
-    res.status(500).json({ message: "Database unavailable" });
-  }
-});
+   
+
 
 // ---------- routes ----------
 app.use("/api/chat", chatRoutes);
