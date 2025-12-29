@@ -118,10 +118,17 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ENV.CLIENT_URL,
+    origin: [
+      "http://localhost:5173",
+      "https://talent-iq-2-ylzf.vercel.app",
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+
+app.options("*", cors());
+
 
 app.use(clerkMiddleware());
 
@@ -133,7 +140,16 @@ app.get("/api/health", (req, res) => {
   res.json({ msg: "API running" });
 });
 
-await connectDB();
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB connection error:", err);
+    res.status(500).json({ message: "Database unavailable" });
+  }
+});
+
 
 
 export default app;

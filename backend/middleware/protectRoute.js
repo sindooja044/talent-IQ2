@@ -27,7 +27,7 @@ if (!user) return res.status(404).json({ message: "User not found" });
 
 
 
-import { requireAuth } from "@clerk/express";
+{/*import { requireAuth } from "@clerk/express";
 import User from "../models/User.js";
 
 export const protectRoute = [
@@ -55,6 +55,42 @@ export const protectRoute = [
     } catch (error) {
       console.error("Error in protectRoute middleware:", error);
       res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+  },
+];  */}
+
+
+import { requireAuth } from "@clerk/express";
+import User from "../models/User.js";
+
+export const protectRoute = [
+  requireAuth(),
+  async (req, res, next) => {
+    try {
+      const auth = req.auth();
+      const clerkId = auth?.userId;
+
+      if (!clerkId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      let user = await User.findOne({ clerkId });
+
+      if (!user) {
+        user = await User.create({
+          clerkId,
+          name: auth.firstName || "Unknown",
+          email: auth.emailAddress || `user_${clerkId}@example.com`,
+        });
+      }
+
+      req.user = user;
+      next();
+    } catch (error) {
+      console.error("Error in protectRoute middleware:", error);
+      return res
+        .status(500)
+        .json({ message: "Internal Server Error" });
     }
   },
 ];
