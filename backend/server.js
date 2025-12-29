@@ -113,14 +113,14 @@ import sessionRoutes from "./routes/sessionRoute.js";
 
 const app = express();
 
-// middleware
+// ---------- middleware ----------
 app.use(express.json());
 
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://talent-iq-2-ylzf.vercel.app",
+      "https://talent-iq-2.vercel.app",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -128,18 +128,9 @@ app.use(
 );
 
 app.options("*", cors());
-
-
 app.use(clerkMiddleware());
 
-// routes
-app.use("/api/chat", chatRoutes);
-app.use("/api/sessions", sessionRoutes);
-
-app.get("/api/health", (req, res) => {
-  res.json({ msg: "API running" });
-});
-
+// ---------- DB CONNECT (BEFORE ROUTES) ----------
 app.use(async (req, res, next) => {
   try {
     await connectDB();
@@ -150,6 +141,12 @@ app.use(async (req, res, next) => {
   }
 });
 
+// ---------- routes ----------
+app.use("/api/chat", chatRoutes);
+app.use("/api/sessions", sessionRoutes);
 
+app.get("/api/health", (req, res) => {
+  res.json({ msg: "API running" });
+});
 
 export default app;
