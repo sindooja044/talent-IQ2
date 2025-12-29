@@ -129,7 +129,7 @@ app.use(clerkMiddleware());
 app.use("/api/chat", chatRoutes);
 app.use("/api/sessions", sessionRoutes);
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({ msg: "API running" });
 });
 
