@@ -127,7 +127,7 @@ app.use(
   })
 );
 
-app.options("*", cors());
+app.options(cors());
 app.use(clerkMiddleware());
 
 // ---------- DB CONNECT (BEFORE ROUTES) ----------
