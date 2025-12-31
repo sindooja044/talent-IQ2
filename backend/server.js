@@ -1,4 +1,4 @@
-/*import express from "express";
+import express from "express";
 import path from "path";
 import cors from "cors";
 import { serve } from "inngest/express";
@@ -47,7 +47,7 @@ const startServer = async () => {
   }
 };
 
-startServer();  */
+startServer();  
 
 
 /*import express from "express";
@@ -98,7 +98,7 @@ if (ENV.NODE_ENV !== "production") {
   });
 }
 
-export default app;*/
+export default app;
 
 
 import express from "express";
@@ -145,3 +145,4 @@ app.get("/api/health", (req, res) => {
 });
 
 export default app;
+*/
